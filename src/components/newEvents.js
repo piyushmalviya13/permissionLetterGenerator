@@ -1,20 +1,23 @@
 import React from "react";
 import axios from "axios";
-import { Form, FormGroup, Input } from "reactstrap";
+import { Form, FormGroup, Input, Label } from "reactstrap";
 import { Card, CardBody } from "reactstrap";
 import { Button } from "reactstrap";
 import Box from "@material-ui/core/Box";
+import DatePicker from "react-datepicker";
+import Row from "react-bootstrap/Row";
 
 class NewEvent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      date: "",
-      time: "",
+      date: new Date(),
       venue: "",
       audience: "",
       topic: "",
+      requirement: false,
+      materialsRequired: "",
     };
   }
 
@@ -22,11 +25,23 @@ class NewEvent extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleChange = (date) => {
+    this.setState({
+      date: date,
+    });
+  };
+
+  handleCheckbox = (e) => {
+    this.setState({
+      requirement: !this.requirement,
+    });
+  };
   onsubmit = (e) => {
     e.preventDefault();
-    var eventData = JSON.stringify(this.state);
+
+    //console.log(this.state);
     axios
-      .post("http://127.0.0.1:5000/application_generator", eventData)
+      .post("http://127.0.0.1:5000/application_generator", this.state)
       .then((response) => {
         console.log(response);
       })
@@ -42,26 +57,30 @@ class NewEvent extends React.Component {
           <CardBody>
             <Form>
               <FormGroup>
-                <Input
-                  type="text"
-                  name="date"
-                  placeholder="Event Date"
-                  value={this.state.date}
-                  onChange={this.onchange}
-                />
+                <Row>
+                  <Box pl={2} pt={1} pr={4}>
+                    <h6>
+                      <b>Event Date and Time</b>
+                    </h6>
+                  </Box>
+
+                  <DatePicker
+                    selected={this.state.date}
+                    onChange={(date) => this.handleChange(date)}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={30}
+                    timeCaption="time"
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                  />
+                </Row>
+
                 <br></br>
-                <Input
-                  type="text"
-                  name="time"
-                  placeholder="Event Time"
-                  value={this.state.time}
-                  onChange={this.onchange}
-                />
-                <br></br>
+
                 <Input
                   type="text"
                   name="venue"
-                  placeholder="Event Venue"
+                  placeholder="Enter Venue"
                   value={this.state.venue}
                   onChange={this.onchange}
                 />
@@ -69,7 +88,7 @@ class NewEvent extends React.Component {
                 <Input
                   type="text"
                   name="audience"
-                  placeholder="Event Audience"
+                  placeholder="Enter Audience"
                   value={this.state.audience}
                   onChange={this.onchange}
                 />
@@ -77,8 +96,22 @@ class NewEvent extends React.Component {
                 <Input
                   type="text"
                   name="topic"
-                  placeholder="Event Topic"
+                  placeholder="Enter Topic"
                   value={this.state.topic}
+                  onChange={this.onchange}
+                />
+                <br></br>
+                <Label check>
+                  <Input type="checkbox" onChange={this.handleCheckbox} /> Extra
+                  Requirements
+                </Label>
+                <br></br>
+                <br></br>
+                <Input
+                  type="text"
+                  name="materialsRequired"
+                  placeholder="Enter Requirements"
+                  value={this.state.materialsRequired}
                   onChange={this.onchange}
                 />
                 <br></br>
