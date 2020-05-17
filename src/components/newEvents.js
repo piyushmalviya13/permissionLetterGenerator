@@ -67,8 +67,12 @@ class NewEvent extends React.Component {
     delete data["message"];
     //var dataJson = JSON.stringify(data);
     console.log(data);
+
     axios
-      .get("https://applicationsgsits.pythonanywhere.com/application_generator")
+      .post(
+        "https://applicationsgsits.pythonanywhere.com/application_generator",
+        data
+      )
       .then((response) => {
         console.log(response);
         this.setState({
@@ -82,24 +86,6 @@ class NewEvent extends React.Component {
           message: "Error",
         });
       });
-    // axios
-    //   .post(
-    //     "https://applicationsgsits.pythonanywhere.com/application_generator",
-    //     data
-    //   )
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.setState({
-    //       message: "Application generated",
-    //       show: true,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     this.setState({
-    //       message: "Error",
-    //     });
-    //   });
   };
 
   render() {
