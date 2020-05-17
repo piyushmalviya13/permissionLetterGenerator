@@ -22,6 +22,7 @@ class NewEvent extends React.Component {
       requirement: false,
       materialsRequired: "",
       email: "",
+      message: "",
     };
   }
 
@@ -61,15 +62,25 @@ class NewEvent extends React.Component {
     //console.log(data);
     data.date = convertedDate;
     delete data["eventDate"];
-    var dataJson = JSON.stringify(data);
-    console.log(dataJson);
+    delete data["message"];
+    //var dataJson = JSON.stringify(data);
+    console.log(data);
     axios
-      .post("http://127.0.0.1:5000/application_generator", this.state)
+      .post(
+        "http://applicationsgsits.pythonanywhere.com/application_generator",
+        data
+      )
       .then((response) => {
         console.log(response);
+        this.setState({
+          message: "Application generated",
+        });
       })
       .catch((error) => {
         console.log(error);
+        this.setState({
+          message: "Error",
+        });
       });
   };
 
@@ -78,6 +89,9 @@ class NewEvent extends React.Component {
       <div>
         <Card>
           <CardBody>
+            <div>
+              <h6>{this.state.message}</h6>
+            </div>
             <Form>
               <FormGroup>
                 <Row>
