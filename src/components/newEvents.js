@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import DatePicker from "react-datepicker";
 import Row from "react-bootstrap/Row";
 import TimePicker from "react-time-picker";
+import Alert from "react-bootstrap/Alert";
 
 class NewEvent extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class NewEvent extends React.Component {
       materialsRequired: "",
       email: "",
       message: "",
+      show: false,
     };
   }
 
@@ -74,6 +76,7 @@ class NewEvent extends React.Component {
         console.log(response);
         this.setState({
           message: "Application generated",
+          show: true,
         });
       })
       .catch((error) => {
@@ -89,9 +92,9 @@ class NewEvent extends React.Component {
       <div>
         <Card>
           <CardBody>
-            <div>
-              <h6>{this.state.message}</h6>
-            </div>
+            <Alert show={this.state.show} variant="success">
+              <Alert.Heading>{this.state.message}</Alert.Heading>
+            </Alert>
             <Form>
               <FormGroup>
                 <Row>
@@ -149,7 +152,7 @@ class NewEvent extends React.Component {
                   onChange={this.onchange}
                 />
                 <br></br>
-                <Label check>
+                {/* <Label check>
                   <Input type="checkbox" onChange={this.handleCheckbox} /> Extra
                   Requirements
                 </Label>
@@ -162,7 +165,7 @@ class NewEvent extends React.Component {
                   value={this.state.materialsRequired}
                   onChange={this.onchange}
                 />
-                <br></br>
+                <br></br> */}
                 <Input
                   type="email"
                   name="email"
@@ -179,7 +182,7 @@ class NewEvent extends React.Component {
 
         <Box mx="auto" p={1}>
           <Button size="lg" color="secondary" onClick={this.onsubmit}>
-            Add Task
+            Generate Application
           </Button>
         </Box>
       </div>
