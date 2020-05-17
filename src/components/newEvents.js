@@ -6,26 +6,32 @@ import { Button } from "reactstrap";
 import Box from "@material-ui/core/Box";
 import DatePicker from "react-datepicker";
 import Row from "react-bootstrap/Row";
+import TimePicker from "react-time-picker";
 
 class NewEvent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      date: new Date(),
+      date: "",
+      eventDate: new Date(),
+      time: "10:00",
       venue: "",
       audience: "",
       topic: "",
       requirement: false,
       materialsRequired: "",
+      email: "",
     };
   }
+
+  onTimeChange = (time) => this.setState({ time });
 
   onchange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleChange = (date) => {
+  handleDateChange = (date) => {
     this.setState({
       date: date,
     });
@@ -36,10 +42,27 @@ class NewEvent extends React.Component {
       requirement: !this.requirement,
     });
   };
+
+  convertDate = (val) => {
+    var dd = val.getDate();
+    var mm = val.getMonth() + 1;
+    var yy = val.getFullYear();
+    //console.log(dd + "/" + mm + "/" + yy);
+    return dd + "/" + mm + "/" + yy;
+  };
+
   onsubmit = (e) => {
     e.preventDefault();
 
+    const convertedDate = this.convertDate(this.state.eventDate);
+
     //console.log(this.state);
+    var data = this.state;
+    //console.log(data);
+    data.date = convertedDate;
+    delete data["eventDate"];
+    var dataJson = JSON.stringify(data);
+    console.log(dataJson);
     axios
       .post("http://127.0.0.1:5000/application_generator", this.state)
       .then((response) => {
@@ -60,18 +83,29 @@ class NewEvent extends React.Component {
                 <Row>
                   <Box pl={2} pt={1} pr={4}>
                     <h6>
-                      <b>Event Date and Time</b>
+                      <b>Event Date</b>
                     </h6>
                   </Box>
 
                   <DatePicker
-                    selected={this.state.date}
-                    onChange={(date) => this.handleChange(date)}
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={30}
-                    timeCaption="time"
-                    dateFormat="MMMM d, yyyy h:mm aa"
+                    selected={this.state.eventDate}
+                    onChange={(eventDate) => this.handleDateChange(eventDate)}
+                    dateFormat="MMMM d, yyyy"
+                  />
+                </Row>
+
+                <br></br>
+
+                <Row>
+                  <Box pl={2} pt={1} pr={4}>
+                    <h6>
+                      <b>Event Time</b>
+                    </h6>
+                  </Box>
+
+                  <TimePicker
+                    onChange={this.onTimeChange}
+                    value={this.state.time}
                   />
                 </Row>
 
@@ -112,6 +146,14 @@ class NewEvent extends React.Component {
                   name="materialsRequired"
                   placeholder="Enter Requirements"
                   value={this.state.materialsRequired}
+                  onChange={this.onchange}
+                />
+                <br></br>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Enter Email ID"
+                  value={this.state.email}
                   onChange={this.onchange}
                 />
                 <br></br>

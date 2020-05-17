@@ -8,7 +8,7 @@ import Appbar from "./components/Navbar.js";
 function App() {
   return (
     <div className="App">
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Box mx="auto" p={5}>
           <Appbar />
           <NewEvent />
