@@ -70,7 +70,7 @@ class NewEvent extends React.Component {
 
     axios
       .post(
-        "application-generator.el.r.appspot.com/application_generator",
+        "https://application-generator.el.r.appspot.com/application_generator",
         data
       )
       .then((response) => {
