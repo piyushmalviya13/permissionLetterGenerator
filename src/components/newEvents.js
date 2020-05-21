@@ -36,7 +36,7 @@ class NewEvent extends React.Component {
 
   handleDateChange = (date) => {
     this.setState({
-      date: date,
+      eventDate: date,
     });
   };
 
