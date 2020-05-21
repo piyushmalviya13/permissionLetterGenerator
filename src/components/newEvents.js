@@ -6,7 +6,6 @@ import { Button } from "reactstrap";
 import Box from "@material-ui/core/Box";
 import DatePicker from "react-datepicker";
 import Row from "react-bootstrap/Row";
-import TimePicker from "react-time-picker";
 import Alert from "react-bootstrap/Alert";
 
 class NewEvent extends React.Component {
@@ -16,7 +15,7 @@ class NewEvent extends React.Component {
     this.state = {
       date: "",
       eventDate: new Date(),
-      time: "10:00",
+      time: "",
       venue: "",
       audience: "",
       topic: "",
@@ -27,8 +26,6 @@ class NewEvent extends React.Component {
       show: false,
     };
   }
-
-  onTimeChange = (time) => this.setState({ time });
 
   onchange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -114,19 +111,13 @@ class NewEvent extends React.Component {
 
                 <br></br>
 
-                <Row>
-                  <Box pl={2} pt={1} pr={4}>
-                    <h6>
-                      <b>Event Time</b>
-                    </h6>
-                  </Box>
-
-                  <TimePicker
-                    onChange={this.onTimeChange}
-                    value={this.state.time}
-                  />
-                </Row>
-
+                <Input
+                  type="text"
+                  name="time"
+                  placeholder="Enter Time"
+                  value={this.state.time}
+                  onChange={this.onchange}
+                />
                 <br></br>
 
                 <Input
